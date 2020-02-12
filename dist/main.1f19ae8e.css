@@ -1,19 +1,58 @@
+/* devices breackpoints */
 body {
   display: grid;
   grid-template-columns: 1fr 6fr;
-  background-color: powderblue;
+  background-color: #f0a23d;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  font-size: 14px;
+  box-sizing: border-box; }
+  @media (max-width: 768px) {
+    body {
+      grid-template-columns: 0fr 6fr; } }
 
 #message {
-  color: blue;
+  color: #f0a23d;
   font-size: 3em;
   text-align: center; }
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 80vh; }
+  .sidebar__title {
+    font-size: 1.5em;
+    text-align: center; }
+  .sidebar__shapes {
+    border: 2px dotted white;
+    font-size: 1.3em;
+    display: flex;
+    flex-direction: column; }
+  .sidebar__shape {
+    border: solid;
+    text-align: center;
+    padding: 1em;
+    margin: 0.1em; }
+  .sidebar__selectors {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    border: 2px dotted white;
+    font-size: 1.3em; }
+  .sidebar__selector {
+    border: solid;
+    text-align: center;
+    padding: 1em;
+    margin: 0.1em; }
+  .sidebar__footer {
+    text-align: center;
+    margin-top: auto; }
 
 .main {
   border: solid;
   height: 100vh;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  display: flex; }
 
 
 /*# sourceMappingURL=/main.1f19ae8e.css.map */

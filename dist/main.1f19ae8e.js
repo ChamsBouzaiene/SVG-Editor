@@ -189,13 +189,206 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"main.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"SVGElement.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var SVGElement =
+/*#__PURE__*/
+function () {
+  function SVGElement(_ref) {
+    var width = _ref.width,
+        height = _ref.height,
+        posX = _ref.posX,
+        posY = _ref.posY,
+        id = _ref.id;
+
+    _classCallCheck(this, SVGElement);
+
+    this.width = width || 100;
+    this.height = height || 100;
+    this.posX = posX || 100;
+    this.posY = posY || 100;
+    this.id = id || "svgElement";
+    this.domNode = this.createSVGDOMNode();
+  }
+
+  _createClass(SVGElement, [{
+    key: "createSVGDOMNode",
+    value: function createSVGDOMNode() {
+      var height = this.height,
+          width = this.width,
+          posY = this.posY,
+          posX = this.posX,
+          id = this.id;
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("style", "border: 1px solid black;box-sizing: border-box"); //svg.setAttribute("style", "box-sizing: border-box");
+
+      svg.setAttribute("id", id);
+      svg.setAttribute("x", posX);
+      svg.setAttribute("y", posY);
+      svg.setAttribute("width", width);
+      svg.setAttribute("height", height);
+      svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+      return svg;
+    }
+  }]);
+
+  return SVGElement;
+}();
+
+exports.default = SVGElement;
+},{}],"Area.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _SVGElement2 = _interopRequireDefault(require("./SVGElement"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Area =
+/*#__PURE__*/
+function (_SVGElement) {
+  _inherits(Area, _SVGElement);
+
+  function Area() {
+    _classCallCheck(this, Area);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Area).apply(this, arguments));
+  }
+
+  _createClass(Area, [{
+    key: "appendElement",
+    value: function appendElement() {}
+  }, {
+    key: "setDimentions",
+    value: function setDimentions() {}
+  }]);
+
+  return Area;
+}(_SVGElement2.default); // let test = new Area();
+// console.log(test.domNode);
+
+
+exports.default = Area;
+},{"./SVGElement":"SVGElement.js"}],"Editor.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Editor =
+/*#__PURE__*/
+function () {
+  function Editor(_ref) {
+    var targetNode = _ref.targetNode,
+        playGround = _ref.playGround;
+
+    _classCallCheck(this, Editor);
+
+    this.targetNode = targetNode;
+    this.playGround = playGround;
+    this.domNode = this.createEditor();
+  }
+
+  _createClass(Editor, [{
+    key: "setDimentions",
+    value: function setDimentions(node, width, height) {
+      node.setAttribute("width", width);
+      node.setAttribute("height", height);
+      return node;
+    }
+  }, {
+    key: "createEditor",
+    value: function createEditor() {
+      var editor = this.playGround;
+
+      var _this$getEditorParams = this.getEditorParams(),
+          width = _this$getEditorParams.width,
+          height = _this$getEditorParams.height;
+
+      this.setDimentions(editor, width, height);
+      return editor;
+    }
+  }, {
+    key: "getEditorParams",
+    value: function getEditorParams() {
+      var width = this.targetNode.offsetWidth - 10;
+      var height = this.targetNode.offsetHeight - 10;
+      return {
+        width: width,
+        height: height
+      };
+    }
+  }]);
+
+  return Editor;
+}();
+
+exports.default = Editor;
+},{}],"main.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles.scss");
 
-document.getElementById("message").innerText = "Hello World!";
-},{"./styles.scss":"styles.scss"}],"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _Area = _interopRequireDefault(require("./Area.js"));
+
+var _Editor = _interopRequireDefault(require("./Editor"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import SVGElement from "./SVGElement";
+var main = document.getElementById("main");
+
+var _ref = new _Area.default({}),
+    domNode = _ref.domNode;
+
+var editor = new _Editor.default({
+  targetNode: main,
+  playGround: domNode
+});
+main.appendChild(editor.domNode);
+},{"./styles.scss":"styles.scss","./Area.js":"Area.js","./Editor":"Editor.js"}],"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -223,7 +416,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37675" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40203" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

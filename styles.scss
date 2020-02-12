@@ -1,11 +1,20 @@
-$messagecolor: blue;
-$bgcolor: powderblue;
+$messagecolor: rgb(240, 162, 61);
+$bgcolor: rgb(240, 162, 61);
+
+/* devices breackpoints */
+$breakpoint-tablet: 768px;
+
 body {
   display: grid;
   grid-template-columns: 1fr 6fr;
   background-color: $bgcolor;
   margin: 0;
   padding: 0;
+  font-size: 14px;
+  box-sizing: border-box;
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 0fr 6fr;
+  }
 }
 #message {
   color: $messagecolor;
@@ -13,16 +22,49 @@ body {
   text-align: center;
 }
 
-.sidbar {
+@mixin flex($direction) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+.sidebar {
+  @include flex(column);
+  height: 80vh;
+  // border: solid;
   &__title {
+    font-size: 1.5em;
+    text-align: center;
   }
   &__shapes {
+    border: 2px dotted white;
+    font-size: 1.3em;
+    @include flex(column);
   }
   &__shape {
+    border: solid;
+
+    text-align: center;
+    padding: 1em;
+    margin: 0.1em;
   }
-  &__selections {
+  &__selectors {
+    @include flex(column);
+    margin-top: 0.5em;
+    border: 2px dotted white;
+    font-size: 1.3em;
   }
-  &__selection {
+  &__selector {
+    border: solid;
+
+    text-align: center;
+    padding: 1em;
+    margin: 0.1em;
+  }
+
+  &__footer {
+    text-align: center;
+
+    margin-top: auto;
   }
 }
 
@@ -30,4 +72,5 @@ body {
   border: solid;
   height: 100vh;
   box-sizing: border-box;
+  display: flex;
 }
