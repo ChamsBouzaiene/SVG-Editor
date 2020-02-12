@@ -1,0 +1,10 @@
+$messagecolor: blue;
+$bgcolor: powderblue;
+body {
+	background-color: $bgcolor;
+}
+#message {
+	color: $messagecolor;
+	font-size: 3em;
+	text-align: center;
+}
