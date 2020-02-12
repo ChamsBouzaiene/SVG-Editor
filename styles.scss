@@ -1,10 +1,33 @@
 $messagecolor: blue;
 $bgcolor: powderblue;
 body {
-	background-color: $bgcolor;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  background-color: $bgcolor;
+  margin: 0;
+  padding: 0;
 }
 #message {
-	color: $messagecolor;
-	font-size: 3em;
-	text-align: center;
+  color: $messagecolor;
+  font-size: 3em;
+  text-align: center;
+}
+
+.sidbar {
+  &__title {
+  }
+  &__shapes {
+  }
+  &__shape {
+  }
+  &__selections {
+  }
+  &__selection {
+  }
+}
+
+.main {
+  border: solid;
+  height: 100vh;
+  box-sizing: border-box;
 }

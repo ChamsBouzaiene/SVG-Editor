@@ -1,10 +1,19 @@
 body {
-  background-color: powderblue; }
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  background-color: powderblue;
+  margin: 0;
+  padding: 0; }
 
 #message {
   color: blue;
   font-size: 3em;
   text-align: center; }
+
+.main {
+  border: solid;
+  height: 100vh;
+  box-sizing: border-box; }
 
 
 /*# sourceMappingURL=/main.1f19ae8e.css.map */
