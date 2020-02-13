@@ -211,7 +211,8 @@ function () {
         height = _ref.height,
         posX = _ref.posX,
         posY = _ref.posY,
-        id = _ref.id;
+        id = _ref.id,
+        type = _ref.type;
 
     _classCallCheck(this, SVGElement);
 
@@ -220,7 +221,8 @@ function () {
     this.posX = posX || 100;
     this.posY = posY || 100;
     this.id = id || "svgElement";
-    this.domNode = this.createSVGDOMNode();
+    this.type = type || "svg";
+    this.domNode = this.createSVGDOMNode(type);
   }
 
   _createClass(SVGElement, [{
@@ -230,8 +232,9 @@ function () {
           width = this.width,
           posY = this.posY,
           posX = this.posX,
-          id = this.id;
-      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          id = this.id,
+          type = this.type;
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", type);
       svg.setAttribute("style", "border: 1px solid black;box-sizing: border-box"); //svg.setAttribute("style", "box-sizing: border-box");
 
       svg.setAttribute("id", id);
@@ -291,7 +294,9 @@ function (_SVGElement) {
 
   _createClass(Area, [{
     key: "appendElement",
-    value: function appendElement() {}
+    value: function appendElement(element) {
+      this.domNode.appendChild(element);
+    }
   }, {
     key: "setDimentions",
     value: function setDimentions() {}
@@ -322,14 +327,23 @@ var Editor =
 function () {
   function Editor(_ref) {
     var targetNode = _ref.targetNode,
-        playGround = _ref.playGround;
+        playGround = _ref.playGround,
+        eventHandler = _ref.eventHandler,
+        selector = _ref.selector;
 
     _classCallCheck(this, Editor);
 
     this.targetNode = targetNode;
     this.playGround = playGround;
     this.domNode = this.createEditor();
-  }
+    this.selector = selector;
+    this.svgElements = [];
+    this.EditorEventHandler = eventHandler.startListening({
+      editor: this.domNode,
+      selector: this.selector
+    });
+  } // [TODO] move SetDimentions to lower Layer
+
 
   _createClass(Editor, [{
     key: "setDimentions",
@@ -341,7 +355,8 @@ function () {
   }, {
     key: "createEditor",
     value: function createEditor() {
-      var editor = this.playGround;
+      // [TODO] move SetDimentions to lower Layer
+      var editor = this.playGround.domNode;
 
       var _this$getEditorParams = this.getEditorParams(),
           width = _this$getEditorParams.width,
@@ -360,13 +375,255 @@ function () {
         height: height
       };
     }
+  }, {
+    key: "addElement",
+    value: function addElement(_ref2) {
+      var domNode = _ref2.domNode;
+      this.playGround.appendElement(domNode);
+    }
   }]);
 
   return Editor;
 }();
 
 exports.default = Editor;
-},{}],"main.js":[function(require,module,exports) {
+},{}],"Selector.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Selector =
+/*#__PURE__*/
+function () {
+  function Selector(id) {
+    _classCallCheck(this, Selector);
+
+    this.id = id;
+    this.selectorElem = document.getElementById(this.id);
+  } // check if selected element is an svg inside area not the entire area
+
+
+  _createClass(Selector, [{
+    key: "isSelectable",
+    value: function isSelectable(element, area) {
+      if (element.isSameNode(area)) {
+        return false;
+      }
+
+      return true;
+    }
+  }, {
+    key: "toggleSelectionOverElement",
+    value: function toggleSelectionOverElement(element) {
+      var bound = element.getBoundingClientRect();
+      var style = this.selectorElem.style;
+      style.left = bound.left + "px";
+      style.top = bound.top + "px";
+      style.width = bound.width + "px";
+      style.height = bound.height + "px";
+      style.display = "block";
+    }
+  }, {
+    key: "updateSelection",
+    value: function updateSelection(element, area) {
+      if (this.isSelectable(element, area)) {
+        return this.toggleSelectionOverElement(element);
+      }
+
+      return this.hideSelection();
+    }
+  }, {
+    key: "hideSelection",
+    value: function hideSelection() {
+      this.selectorElem.style.display = "none";
+    }
+  }]);
+
+  return Selector;
+}();
+
+exports.default = Selector;
+},{}],"EditorEventHandler.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EditorEventHandler =
+/*#__PURE__*/
+function () {
+  function EditorEventHandler() {
+    _classCallCheck(this, EditorEventHandler);
+
+    this.editor;
+    this.selector;
+    this.selected;
+    this.offset = {
+      x: 0,
+      y: 0
+    };
+  }
+
+  _createClass(EditorEventHandler, [{
+    key: "startListening",
+    value: function startListening(_ref) {
+      var editor = _ref.editor,
+          selector = _ref.selector;
+      this.editor = editor;
+      this.selector = selector;
+      this.handleEditorEvents();
+    }
+  }, {
+    key: "handleEditorEvents",
+    value: function handleEditorEvents() {
+      this.handleElementsHover();
+      this.handleElementSelect();
+      this.handleMoveElement();
+      this.handleElementDeselect();
+    }
+  }, {
+    key: "handleElementsHover",
+    value: function handleElementsHover() {
+      var _this = this;
+
+      console.log(this);
+      this.editor.addEventListener("mouseover", function (_ref2) {
+        var target = _ref2.target;
+        return _this.selector.updateSelection(target, _this.editor);
+      });
+    }
+  }, {
+    key: "getElementPositionRelativeToCursor",
+    value: function getElementPositionRelativeToCursor() {}
+  }, {
+    key: "handleElementSelect",
+    value: function handleElementSelect() {
+      var _this2 = this;
+
+      var domNode = this.editor.domNode,
+          selector = this.selector,
+          offset = this.offset;
+      this.editor.addEventListener("mousedown", function (event) {
+        var target = event.target,
+            clientX = event.clientX,
+            clientY = event.clientY;
+
+        if (_this2.selector.isSelectable(target, domNode)) {
+          _this2.offset.x = parseFloat(target.getAttribute("x")) - clientX;
+          _this2.offset.y = parseFloat(target.getAttribute("y")) - clientY;
+          _this2.selected = target;
+        }
+      });
+    }
+  }, {
+    key: "handleElementDeselect",
+    value: function handleElementDeselect() {
+      var _this3 = this;
+
+      this.editor.addEventListener("mouseup", function (event) {
+        _this3.selected = null;
+      });
+    }
+  }, {
+    key: "handleMoveElement",
+    value: function handleMoveElement() {
+      var _this4 = this;
+
+      var offset = this.offset,
+          selector = this.selector;
+      this.editor.addEventListener("mousemove", function (event) {
+        var clientX = event.clientX,
+            clientY = event.clientY;
+
+        if (_this4.selected) {
+          if (_this4.selected.tagName === "circle") {
+            _this4.selected.setAttribute("cx", clientX + offset.x);
+
+            _this4.selected.setAttribute("cy", clientY + offset.y);
+          } else {
+            _this4.selected.setAttribute("x", clientX + offset.x);
+
+            _this4.selected.setAttribute("y", clientY + offset.y);
+
+            selector.updateSelection(_this4.selected, _this4.editor);
+          }
+
+          selector.updateSelection(_this4.selected);
+        }
+      });
+    }
+  }]);
+
+  return EditorEventHandler;
+}();
+
+exports.default = EditorEventHandler;
+},{}],"Rect.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _SVGElement2 = _interopRequireDefault(require("./SVGElement"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Rect =
+/*#__PURE__*/
+function (_SVGElement) {
+  _inherits(Rect, _SVGElement);
+
+  function Rect(_ref) {
+    var posX = _ref.posX,
+        posY = _ref.posY;
+
+    _classCallCheck(this, Rect);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Rect).call(this, {
+      type: "rect",
+      posX: posX,
+      posY: posY
+    }));
+  }
+
+  return Rect;
+}(_SVGElement2.default);
+
+exports.default = Rect;
+},{"./SVGElement":"SVGElement.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles.scss");
@@ -375,20 +632,36 @@ var _Area = _interopRequireDefault(require("./Area.js"));
 
 var _Editor = _interopRequireDefault(require("./Editor"));
 
+var _Selector = _interopRequireDefault(require("./Selector"));
+
+var _EditorEventHandler = _interopRequireDefault(require("./EditorEventHandler"));
+
+var _Rect = _interopRequireDefault(require("./Rect"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import SVGElement from "./SVGElement";
+// import SVGElement from "./SVGElement";
 var main = document.getElementById("main");
-
-var _ref = new _Area.default({}),
-    domNode = _ref.domNode;
-
+var area = new _Area.default({});
+var selector = new _Selector.default("outline");
+var editorEventHandler = new _EditorEventHandler.default();
 var editor = new _Editor.default({
   targetNode: main,
-  playGround: domNode
+  playGround: area,
+  selector: selector,
+  eventHandler: editorEventHandler
+}); // test phase
+
+var testRect = new _Rect.default({});
+var testRect2 = new _Rect.default({
+  posX: 150,
+  posY: 200
 });
-main.appendChild(editor.domNode);
-},{"./styles.scss":"styles.scss","./Area.js":"Area.js","./Editor":"Editor.js"}],"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+editor.addElement(testRect);
+editor.addElement(testRect2);
+main.appendChild(editor.domNode); // impliment in editor
+//editorEventHandler.handleEditorEvents();
+},{"./styles.scss":"styles.scss","./Area.js":"Area.js","./Editor":"Editor.js","./Selector":"Selector.js","./EditorEventHandler":"EditorEventHandler.js","./Rect":"Rect.js"}],"../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

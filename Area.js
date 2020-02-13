@@ -1,7 +1,9 @@
 import SVGElement from "./SVGElement";
 
 export default class Area extends SVGElement {
-  appendElement() {}
+  appendElement(element) {
+    this.domNode.appendChild(element);
+  }
 
   setDimentions() {}
 }

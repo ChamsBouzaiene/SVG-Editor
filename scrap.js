@@ -40,3 +40,64 @@ function updateSelection(element) {
 
   selection.style.display = "block";
 }
+
+////////////////////
+
+editor.domNode.addEventListener("mousedown", function(event) {
+  var target = event.target;
+  if (target.isSameNode(editor.domNode) === false) {
+    offset.x = parseFloat(target.getAttribute("x")) - event.clientX;
+    offset.y = parseFloat(target.getAttribute("y")) - event.clientY;
+    selected = target;
+  }
+});
+
+editor.domNode.addEventListener("mouseup", function(event) {
+  selected = null;
+});
+
+editor.domNode.addEventListener("mousemove", function(event) {
+  if (selected) {
+    if (selected.tagName === "circle") {
+      selected.setAttribute("cx", event.clientX + offset.x);
+      selected.setAttribute("cy", event.clientY + offset.y);
+    } else {
+      selected.setAttribute("x", event.clientX + offset.x);
+      selected.setAttribute("y", event.clientY + offset.y);
+      selector.updateSelection(selected, editor.domNode);
+    }
+    updateSelection(selected);
+  }
+});
+
+//
+
+class EditorEventsHandler {
+  constructor(editor, selector) {
+    this.editor = editor;
+    this.selector = selector;
+    this.handleEditorEvents();
+  }
+
+  handleEditorEvents() {
+    this.handleElementsHover();
+  }
+
+  handleElementsHover() {
+    let {
+      editor: { domNode },
+      selector
+    } = this;
+    domNode.addEventListener("mouseover", function({ target }) {
+      return selector.updateSelection(target, editor.domNode);
+    });
+  }
+
+  handleElementSelect() {}
+
+  handleElementDeselect() {}
+
+  handleMoveElement() {}
+}
+
+let editorEventHandler = new EditorEventsHandler(editor, selector);

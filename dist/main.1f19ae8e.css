@@ -52,7 +52,20 @@ body {
   border: solid;
   height: 100vh;
   box-sizing: border-box;
-  display: flex; }
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center; }
+
+.selection {
+  position: absolute;
+  display: none;
+  outline: #9999ff solid 2px;
+  pointer-events: none;
+  left: 333.617px;
+  top: 55px;
+  width: 175.5px;
+  height: 175.5px; }
 
 
 /*# sourceMappingURL=/main.1f19ae8e.css.map */
