@@ -14,6 +14,7 @@ An SVG editor using vanila javascript , why build it ? because i tought it would
 
 ### Todos 🤯
 
+- Rethink the none existing folder structure
 - Add shape on click sidebar
 - Add Title Node on Click
 - Toggle shape color
