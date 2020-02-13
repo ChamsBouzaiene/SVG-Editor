@@ -1,3 +1,5 @@
+import SVGElementModifier from "./SVGElementModifier";
+
 export default class EditorEventHandler {
   constructor() {
     this.editor;
@@ -20,54 +22,28 @@ export default class EditorEventHandler {
   }
 
   handleElementsHover() {
-    console.log(this);
     this.editor.addEventListener("mouseover", ({ target }) => {
-      return this.selector.updateSelection(target, this.editor);
+      SVGElementModifier.toggelHoveredElement({ handler: this, target });
     });
   }
 
   getElementPositionRelativeToCursor() {}
 
   handleElementSelect() {
-    let {
-      editor: { domNode },
-      selector,
-      offset
-    } = this;
-
     this.editor.addEventListener("mousedown", event => {
-      let { target, clientX, clientY } = event;
-      if (this.selector.isSelectable(target, domNode)) {
-        this.offset.x = parseFloat(target.getAttribute("x")) - clientX;
-        this.offset.y = parseFloat(target.getAttribute("y")) - clientY;
-        this.selected = target;
-      }
+      SVGElementModifier.selectElement({ handler: this, event });
     });
   }
 
   handleElementDeselect() {
     this.editor.addEventListener("mouseup", event => {
-      this.selected = null;
+      SVGElementModifier.deselectElement({ handler: this });
     });
   }
 
   handleMoveElement() {
-    let { offset, selector } = this;
-
     this.editor.addEventListener("mousemove", event => {
-      const { clientX, clientY } = event;
-
-      if (this.selected) {
-        if (this.selected.tagName === "circle") {
-          this.selected.setAttribute("cx", clientX + offset.x);
-          this.selected.setAttribute("cy", clientY + offset.y);
-        } else {
-          this.selected.setAttribute("x", clientX + offset.x);
-          this.selected.setAttribute("y", clientY + offset.y);
-          selector.updateSelection(this.selected, this.editor);
-        }
-        selector.updateSelection(this.selected);
-      }
+      SVGElementModifier.moveSelectedElement({ handler: this, event });
     });
   }
 }

@@ -452,6 +452,88 @@ function () {
 }();
 
 exports.default = Selector;
+},{}],"SVGElementModifier.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var SVGElementModifier =
+/*#__PURE__*/
+function () {
+  function SVGElementModifier() {
+    _classCallCheck(this, SVGElementModifier);
+  }
+
+  _createClass(SVGElementModifier, null, [{
+    key: "moveSelectedElement",
+    value: function moveSelectedElement(_ref) {
+      var handler = _ref.handler,
+          event = _ref.event;
+      var selected = handler.selected,
+          selector = handler.selector,
+          editor = handler.editor,
+          offset = handler.offset;
+      var clientX = event.clientX,
+          clientY = event.clientY;
+
+      if (selected) {
+        if (selected.tagName === "circle") {
+          selected.setAttribute("cx", clientX + offset.x);
+          selected.setAttribute("cy", clientY + offset.y);
+        } else {
+          selected.setAttribute("x", clientX + offset.x);
+          selected.setAttribute("y", clientY + offset.y);
+          selector.updateSelection(selected, editor);
+        }
+
+        selector.updateSelection(selected);
+      }
+    }
+  }, {
+    key: "deselectElement",
+    value: function deselectElement(_ref2) {
+      var handler = _ref2.handler;
+      handler.selected = null;
+    }
+  }, {
+    key: "toggelHoveredElement",
+    value: function toggelHoveredElement(_ref3) {
+      var handler = _ref3.handler,
+          target = _ref3.target;
+      return handler.selector.updateSelection(target, handler.editor);
+    }
+  }, {
+    key: "selectElement",
+    value: function selectElement(_ref4) {
+      var handler = _ref4.handler,
+          event = _ref4.event;
+      var target = event.target,
+          clientX = event.clientX,
+          clientY = event.clientY;
+      var selector = handler.selector,
+          editor = handler.editor;
+
+      if (selector.isSelectable(target, editor)) {
+        handler.offset.x = parseFloat(target.getAttribute("x")) - clientX;
+        handler.offset.y = parseFloat(target.getAttribute("y")) - clientY;
+        handler.selected = target;
+      }
+    }
+  }]);
+
+  return SVGElementModifier;
+}();
+
+exports.default = SVGElementModifier;
 },{}],"EditorEventHandler.js":[function(require,module,exports) {
 "use strict";
 
@@ -459,6 +541,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _SVGElementModifier = _interopRequireDefault(require("./SVGElementModifier"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -503,10 +589,13 @@ function () {
     value: function handleElementsHover() {
       var _this = this;
 
-      console.log(this);
       this.editor.addEventListener("mouseover", function (_ref2) {
         var target = _ref2.target;
-        return _this.selector.updateSelection(target, _this.editor);
+
+        _SVGElementModifier.default.toggelHoveredElement({
+          handler: _this,
+          target: target
+        });
       });
     }
   }, {
@@ -517,19 +606,11 @@ function () {
     value: function handleElementSelect() {
       var _this2 = this;
 
-      var domNode = this.editor.domNode,
-          selector = this.selector,
-          offset = this.offset;
       this.editor.addEventListener("mousedown", function (event) {
-        var target = event.target,
-            clientX = event.clientX,
-            clientY = event.clientY;
-
-        if (_this2.selector.isSelectable(target, domNode)) {
-          _this2.offset.x = parseFloat(target.getAttribute("x")) - clientX;
-          _this2.offset.y = parseFloat(target.getAttribute("y")) - clientY;
-          _this2.selected = target;
-        }
+        _SVGElementModifier.default.selectElement({
+          handler: _this2,
+          event: event
+        });
       });
     }
   }, {
@@ -538,7 +619,9 @@ function () {
       var _this3 = this;
 
       this.editor.addEventListener("mouseup", function (event) {
-        _this3.selected = null;
+        _SVGElementModifier.default.deselectElement({
+          handler: _this3
+        });
       });
     }
   }, {
@@ -546,27 +629,11 @@ function () {
     value: function handleMoveElement() {
       var _this4 = this;
 
-      var offset = this.offset,
-          selector = this.selector;
       this.editor.addEventListener("mousemove", function (event) {
-        var clientX = event.clientX,
-            clientY = event.clientY;
-
-        if (_this4.selected) {
-          if (_this4.selected.tagName === "circle") {
-            _this4.selected.setAttribute("cx", clientX + offset.x);
-
-            _this4.selected.setAttribute("cy", clientY + offset.y);
-          } else {
-            _this4.selected.setAttribute("x", clientX + offset.x);
-
-            _this4.selected.setAttribute("y", clientY + offset.y);
-
-            selector.updateSelection(_this4.selected, _this4.editor);
-          }
-
-          selector.updateSelection(_this4.selected);
-        }
+        _SVGElementModifier.default.moveSelectedElement({
+          handler: _this4,
+          event: event
+        });
       });
     }
   }]);
@@ -575,7 +642,7 @@ function () {
 }();
 
 exports.default = EditorEventHandler;
-},{}],"Rect.js":[function(require,module,exports) {
+},{"./SVGElementModifier":"SVGElementModifier.js"}],"Rect.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

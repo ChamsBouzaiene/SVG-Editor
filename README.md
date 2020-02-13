@@ -10,10 +10,10 @@ An SVG editor using vanila javascript , why build it ? because i tought it would
 
 - Basic Editor Layout
 - Editor Event Handler
+- Enhanced architecture
 
 ### Todos 🤯
 
-- Enhance classes and decouple logic
 - Add shape on click sidebar
 - Add Title Node on Click
 - Toggle shape color
