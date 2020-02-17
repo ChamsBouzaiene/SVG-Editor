@@ -23,6 +23,8 @@ An SVG editor using vanila javascript , why build it ? because i tought it would
 - Impliement Resize Selector
 - Resize Event Handler
 - Export SVG
+- Draw mode
+- Zoom in / Zoom out function
 
 ## License
 
