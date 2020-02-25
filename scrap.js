@@ -45,7 +45,7 @@ function updateSelection(element) {
 
 editor.domNode.addEventListener("mousedown", function(event) {
   var target = event.target;
-  if (target.isSameNode(editor.domNode) === false) {
+  if (selector.isSameNode(editor.domNode) === false) {
     offset.x = parseFloat(target.getAttribute("x")) - event.clientX;
     offset.y = parseFloat(target.getAttribute("y")) - event.clientY;
     selected = target;
