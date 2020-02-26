@@ -7,7 +7,3 @@ export default class Area extends SVGElement {
 
   setDimentions() {}
 }
-
-// let test = new Area();
-
-// console.log(test.domNode);

@@ -1,4 +1,4 @@
-export default class Selector {
+export default class ShapeSelector {
   constructor(id) {
     this.id = id;
     this.selectorElem = document.getElementById(this.id);

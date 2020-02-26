@@ -13,7 +13,6 @@ export default class SVGElement {
     let { height, width, posY, posX, id, type } = this;
     let svg = document.createElementNS("http://www.w3.org/2000/svg", type);
     svg.setAttribute("style", "border: 1px solid black;box-sizing: border-box");
-    //svg.setAttribute("style", "box-sizing: border-box");
     svg.setAttribute("id", id);
     svg.setAttribute("x", posX);
     svg.setAttribute("y", posY);
