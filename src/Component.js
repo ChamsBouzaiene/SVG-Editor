@@ -24,7 +24,13 @@ class component {
   }
 
   setState() {} // this events of state update triggere store publish
-  subscribeToStore() {}
+
+  // this.subscribe(event , fucntion() {}) {
+
+  //}
+  subscribeToStore(event, callback) {
+    eventEngine.subscribe(event, callback);
+  }
 
   publishToStore() {}
 

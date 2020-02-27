@@ -1,4 +1,4 @@
-import SVGElementModifier from "../../Shape/Modifiers/SVGElementModifier";
+import SVGElementModifier from "../Components/Shape/Modifiers/SVGElementModifier";
 
 export default class EditorEventHandler {
   constructor() {

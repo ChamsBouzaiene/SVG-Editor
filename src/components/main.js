@@ -1,9 +1,12 @@
 import "./styles.scss";
-import Area from "./Shape/Models/SVGArea";
+import Area from "./Editor/Components/Shape/Models/SVGArea";
 import Editor from "./Editor/index";
-import ShapeSelector from "./Selector/ShapeSelector";
+import ShapeSelector from "./Editor/Components/Selector/ShapeSelector";
 import EditorEventHandler from "./Editor/EventHandlers/EditorEventHandler";
-import Rect from "./Shape/Models/SVGRect";
+import Rect from "./Editor/Components/Shape/Models/SVGRect";
+import { sideBarDomNode } from "./SideBar";
+import Store from "../core/store/";
+const eventEngine = require("../core/store/eventEngine");
 
 let main = document.getElementById("main");
 const area = new Area({});
@@ -17,9 +20,23 @@ const editor = new Editor({
 });
 
 // test phase
-const testRect = new Rect({});
-const testRect2 = new Rect({ posX: 150, posY: 200 });
-editor.addElement(testRect);
-editor.addElement(testRect2);
+
+Store.state.shapes.forEach(shape => {
+  let newSVG = new Rect({ posX: shape.cords.x, posY: shape.cords.y });
+  editor.addElement(newSVG);
+});
+
+eventEngine.subscribe("onAddSVG", shape => {
+  let newSVG = new Rect({ posX: shape.cords.x, posY: shape.cords.y });
+  editor.addElement(newSVG);
+});
+
+// const testRect = new Rect({});
+// const testRect2 = new Rect({ posX: 150, posY: 200 });
+
+// editor.addElement(testRect);
+// editor.addElement(testRect2);
 
 main.appendChild(editor.domNode);
+
+console.log(Store.state.shapes);
