@@ -1,9 +1,10 @@
 import "./styles.scss";
-import Area from "./Area.js";
-import Editor from "./Editor";
-import ShapeSelector from "./ShapeSelector";
-import EditorEventHandler from "./EditorEventHandler";
-import Rect from "./Rect";
+import Area from "./Shape/Models/SVGArea";
+import Editor from "./Editor/index";
+import ShapeSelector from "./Selector/ShapeSelector";
+import EditorEventHandler from "./Editor/EventHandlers/EditorEventHandler";
+import Rect from "./Shape/Models/SVGRect";
+
 let main = document.getElementById("main");
 const area = new Area({});
 const selector = new ShapeSelector("outline");
@@ -22,7 +23,3 @@ editor.addElement(testRect);
 editor.addElement(testRect2);
 
 main.appendChild(editor.domNode);
-
-const state = {};
-
-const stateMachine = {};
