@@ -2,9 +2,9 @@ export default class SVGElementModifier {
   constructor() {}
 
   static moveSelectedElement({ handler, event }) {
-    const { selected, selector, editor, offset } = handler;
+    const { state, selected, selector, editor, offset } = handler;
     const { clientX, clientY } = event;
-    if (selected) {
+    if (selected && state === "toggled") {
       if (selected.tagName === "circle") {
         selected.setAttribute("cx", clientX + offset.x);
         selected.setAttribute("cy", clientY + offset.y);
@@ -17,11 +17,16 @@ export default class SVGElementModifier {
     }
   }
   static deselectElement({ handler }) {
+    SVGElementModifier.changeElementColor(handler.selected, "black");
     handler.selected = null;
   }
 
   static toggelHoveredElement({ handler, target }) {
     return handler.selector.updateSelection(target, handler.editor);
+  }
+
+  static changeElementColor(element, color) {
+    element.style.fill = color;
   }
 
   static selectElement({ handler, event }) {
@@ -30,7 +35,7 @@ export default class SVGElementModifier {
     if (selector.isSelectable(target, editor)) {
       handler.offset.x = parseFloat(target.getAttribute("x")) - clientX;
       handler.offset.y = parseFloat(target.getAttribute("y")) - clientY;
-      handler.selected = target;
+      SVGElementModifier.changeElementColor(target, "deepskyblue");
     }
   }
 }

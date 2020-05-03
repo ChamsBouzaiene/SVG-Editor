@@ -7,7 +7,8 @@ export default class Editor {
     this.svgElements = [];
     this.EditorEventHandler = eventHandler.startListening({
       editor: this.domNode,
-      selector: this.selector
+      selector: this.selector,
+      selectables: this.svgElements
     });
   }
   // [TODO] move SetDimentions to lower Layer
@@ -32,6 +33,7 @@ export default class Editor {
   }
 
   addElement({ domNode }) {
+    this.svgElements.push(domNode);
     this.playGround.appendElement(domNode);
   }
 }

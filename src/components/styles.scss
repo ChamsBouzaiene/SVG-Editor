@@ -21,6 +21,12 @@ body {
   font-size: 3em;
   text-align: center;
 }
+#div {
+  border: 1px dotted #000;
+  position: absolute;
+  background-color: #09caf766;
+  display: none;
+}
 
 @mixin flex($direction) {
   display: flex;

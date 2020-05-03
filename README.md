@@ -14,13 +14,28 @@ building and udaptable design pattern for an event driven front-end application
 
 # New Features! 🧪
 
+- Component Based Decomposition
+- Modular Archetecture
+- Global State Store
+- Event Engine Pub/Sub implimentation
+- Add Rect Elements
 - Basic Editor Layout
 - Editor Event Handler
 - Enhanced architecture
 
 ### Todos 🤯
 
-- Rethink the none existing folder structure
+- Abstract Add Element to editor
+- component base class has access to events and state
+- shape factory
+- add new shapes
+- add Select area
+- clean the code
+- Add Move Selected by many
+- Save Shapes pos Data in store
+- Duplicate element on ctr-z
+  -Remove element on Delete
+  -Popup on Right Click with modifier menu
 - Add shape on click sidebar
 - Add Title Node on Click
 - Toggle shape color

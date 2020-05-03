@@ -9,24 +9,24 @@ import Store from "../core/store/";
 const eventEngine = require("../core/store/eventEngine");
 
 let main = document.getElementById("main");
-const area = new Area({});
+const area = new Area({ id: "area" });
 const selector = new ShapeSelector("outline");
 const editorEventHandler = new EditorEventHandler();
 const editor = new Editor({
   targetNode: main,
   playGround: area,
   selector,
-  eventHandler: editorEventHandler
+  eventHandler: editorEventHandler,
 });
 
 // test phase
 
-Store.state.shapes.forEach(shape => {
+Store.state.shapes.forEach((shape) => {
   let newSVG = new Rect({ posX: shape.cords.x, posY: shape.cords.y });
   editor.addElement(newSVG);
 });
 
-eventEngine.subscribe("onAddSVG", shape => {
+eventEngine.subscribe("onAddSVG", (shape) => {
   let newSVG = new Rect({ posX: shape.cords.x, posY: shape.cords.y });
   editor.addElement(newSVG);
 });
