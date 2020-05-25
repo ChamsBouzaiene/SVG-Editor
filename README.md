@@ -2,10 +2,6 @@
 
 An SVG editor using vanila javascript , why build it ? because i tought it would be a fun challenge 😁 .
 
-- Type some Markdown on the left
-- See HTML in the right
-- Magic
-
 # Why Build this project!
 
 I started working in this project cause i wanted to better my skills in archectecture and design thoughts and to make
